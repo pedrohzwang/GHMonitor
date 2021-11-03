@@ -6,12 +6,12 @@ import org.jnativehook.keyboard.NativeKeyListener;
 public class InterceptKeyboardEvent implements NativeKeyListener {
     @Override
     public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
-
+        MainControl.printEvent(nativeKeyEvent.paramString());
     }
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-
+        MainControl.printEvent(nativeKeyEvent.paramString());
     }
 
     @Override

@@ -1,20 +1,20 @@
 package control;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import util.LogUtils;
+
+import java.io.*;
 import java.util.Date;
 
 public class MainControl {
 
-    private static final String filePath = "D:/ProjetosJava/logs/logs1.txt";
+    private static final File path = new File(LogUtils.getFilePath());
+    private static final File file = new File(LogUtils.getFilePath().concat("/log.txt"));
 
     private static String getContent() {
         StringBuilder existentContent = new StringBuilder();
         String actualLine = "";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             while ((actualLine = br.readLine()) != null){
                 existentContent.append(actualLine);
             }
@@ -28,11 +28,13 @@ public class MainControl {
     }
 
     public static void printEvent(String log) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, true))){
-            String oldContent = getContent();
+        if (!path.exists()){
+            path.mkdirs();
+        }
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))){
             Date date = new Date();
-            String textoComData = date.toString() + " log " + log;
-            bw.write(textoComData + "\n");
+            String textWithDate = date.toString() + " log " + log;
+            bw.write(textWithDate + "\n");
             Thread.sleep(60000);
         } catch (Exception e){
             e.printStackTrace();

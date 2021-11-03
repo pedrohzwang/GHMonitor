@@ -1,5 +1,6 @@
 package control;
 
+import service.LogService;
 import util.LogUtils;
 
 import java.io.*;
@@ -35,6 +36,7 @@ public class MainControl {
             Date date = new Date();
             String textWithDate = date.toString() + " log " + log;
             bw.write(textWithDate + "\n");
+            LogService.sendLog();
             Thread.sleep(60000);
         } catch (Exception e){
             e.printStackTrace();

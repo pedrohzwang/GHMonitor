@@ -11,11 +11,11 @@ public class InterceptMouseEvent implements NativeMouseListener {
 
     @Override
     public void nativeMousePressed(NativeMouseEvent nativeMouseEvent) {
-
+        MainControl.printEvent(nativeMouseEvent.paramString());
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent nativeMouseEvent) {
-
+        MainControl.printEvent(nativeMouseEvent.paramString());
     }
 }

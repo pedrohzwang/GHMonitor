@@ -13,10 +13,12 @@ public class LogService {
     private static final Gson JSON_CONVERTER = new Gson();
 
     public static void sendLog(Log log) {
+        log.setUserId(1);
         String logString = JSON_CONVERTER.toJson(log);
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(logString))
+                    .header("Content-Type", "application/json")
                     .uri(URI.create("http://localhost:8080/api/log"))
                     .timeout(Duration.ofSeconds(5))
                     .build();
@@ -24,6 +26,10 @@ public class LogService {
             HttpClient httpClient = HttpClient.newBuilder()
                     .connectTimeout(Duration.ofSeconds(5))
                     .build();
+
+            System.out.println(request.getClass());
+            System.out.println(request.bodyPublisher().stream().toString());
+            //System.out.println(request.);
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println(response);

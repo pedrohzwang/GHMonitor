@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Log {
-    private String conteudo;
-    private String dtLog;
+    private String content;
+    private String logDate;
+    private Integer userId;
 }

